@@ -18,6 +18,8 @@
 
 ## 如何使用
 
+```curl -sSL https://raw.githubusercontent.com/xkatld/debian12-arm64-zfs/main/build_zfs_on_debian.sh | sudo bash```
+
 1.  赋予脚本可执行权限：
     ```sh
     chmod +x build_zfs_on_debian.sh
