@@ -1,9 +1,17 @@
 #!/bin/bash
 
+LOG_DIR="/var/log/zfs_build_logs"
+mkdir -p "$LOG_DIR"
+LOG_FILE="${LOG_DIR}/zfs_build_$(date +%Y%m%d_%H%M%S).log"
+exec &> >(tee -a "$LOG_FILE")
+
 set -e
 set -u
 
 ZFS_VER="2.2.6"
+
+echo ">>> 本次操作的完整日志将保存在: ${LOG_FILE}"
+echo ""
 
 echo ">>> [1/5] 开始在 Debian 12 arm64 上编译安装 OpenZFS 版本 ${ZFS_VER}"
 echo ">>> 内核版本: $(uname -r)"
