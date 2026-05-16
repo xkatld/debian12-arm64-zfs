@@ -58,7 +58,7 @@ jobs:
         id: package
         run: |
           FILENAME="zfs-modules-${{ matrix.config.arch }}-${{ steps.kernel.outputs.ver }}-zfs${{ matrix.config.zfs_ver }}.tgz"
-          tar -czf "/tmp/${FILENAME}" -C /tmp/output .
+          tar -czf "/tmp/${FILENAME}" -C /tmp/output lib/modules
           echo "filename=${FILENAME}" >> $GITHUB_OUTPUT
 
       - name: 上传 artifact
