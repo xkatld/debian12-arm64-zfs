@@ -44,14 +44,14 @@ jobs:
 
       - name: 下载源码
         run: |
-          curl -sL \
-            "https://github.com/openzfs/zfs/releases/download/zfs-${{ matrix.zfs_ver }}/zfs-${{ matrix.zfs_ver }}.tar.gz" \
+          curl -fSL \
+            "https://github.com/openzfs/zfs/releases/download/zfs-${{ matrix.config.zfs_ver }}/zfs-${{ matrix.config.zfs_ver }}.tar.gz" \
             -o /tmp/zfs.tar.gz
           tar -xzf /tmp/zfs.tar.gz -C /tmp
 
       - name: 编译安装
         run: |
-          cd /tmp/zfs-${{ matrix.zfs_ver }}
+          cd /tmp/zfs-${{ matrix.config.zfs_ver }}
           ./autogen.sh
           ./configure
           make -j$(nproc)
