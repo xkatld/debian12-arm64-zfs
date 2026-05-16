@@ -3,6 +3,9 @@ name: 打包 ZFS 模块
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: debian${{ matrix.config.debian_ver }}-${{ matrix.config.arch }}-zfs${{ matrix.config.zfs_ver }}
