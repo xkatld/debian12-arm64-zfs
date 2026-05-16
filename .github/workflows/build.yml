@@ -54,19 +54,11 @@ jobs:
           make -j$(nproc)
           make install DESTDIR=/tmp/output
 
-      - name: 查看安装目录结构
-        run: find /tmp/output -maxdepth 4 -type d
-
       - name: 打包
         id: package
         run: |
           FILENAME="zfs-modules-${{ matrix.config.arch }}-${{ steps.kernel.outputs.ver }}-zfs${{ matrix.config.zfs_ver }}.tgz"
-          tar -czf "/tmp/${FILENAME}" -C /tmp/output \
-            --exclude=./usr/bin \
-            --exclude=./usr/sbin \
-            --exclude=./bin \
-            --exclude=./sbin \
-            .
+          tar -czf "/tmp/${FILENAME}" -C /tmp/output --exclude=./sbin .
           echo "filename=${FILENAME}" >> $GITHUB_OUTPUT
 
       - name: 上传 artifact
