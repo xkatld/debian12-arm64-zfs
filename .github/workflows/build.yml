@@ -1,9 +1,6 @@
 name: 构建 ZFS 模块
 
 on:
-  push:
-    tags:
-      - 'v*'
   workflow_dispatch:
 
 jobs:
@@ -60,7 +57,7 @@ jobs:
       - name: 打包
         id: package
         run: |
-          FILENAME="zfs-modules-${{ matrix.config.arch }}-${{ steps.kernel.outputs.ver }}-zfs${{ matrix.zfs_ver }}.tgz"
+          FILENAME="zfs-modules-${{ matrix.config.arch }}-${{ steps.kernel.outputs.ver }}-zfs${{ matrix.config.zfs_ver }}.tgz"
           tar -czf "/tmp/${FILENAME}" -C /tmp/output .
           echo "filename=${FILENAME}" >> $GITHUB_OUTPUT
 
@@ -69,27 +66,3 @@ jobs:
         with:
           name: ${{ steps.package.outputs.filename }}
           path: /tmp/${{ steps.package.outputs.filename }}
-
-  release:
-    name: 发布 Release
-    needs: build
-    if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - name: 下载所有 artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-          merge-multiple: true
-
-      - name: 创建 Release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release create "${{ github.ref_name }}" artifacts/*.tgz \
-            --repo "${{ github.repository }}" \
-            --generate-notes \
-            --title "ZFS Modules ${{ github.ref_name }}"
